@@ -228,3 +228,24 @@ legend span {
   background-color: transparent!important;
   border: none;
 }
+/* notificaciones */
+.notificacion{
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 1rem 3rem;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+.visible{
+  opacity: 1;
+}
+/* colores notificaciones */
+.correcto{
+  background-color: greenyellow;
+  color: green;
+}
+.error{
+  background-color: pink;
+  color: red;
+}
