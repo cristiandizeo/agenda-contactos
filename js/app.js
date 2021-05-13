@@ -5,6 +5,9 @@ eventListeners();
 function eventListeners() {
   //Cuando el formulario de crear o editar se ejecuta
   formularioContactos.addEventListener("submit", leerFormulario);
+
+  //listener para eliminar 
+  listadoContactos.addEventListener("click", eliminarContacto);
 }
 
 function leerFormulario(e) {
@@ -39,6 +42,7 @@ function leerFormulario(e) {
 function insertarBD(datos) {
   //llamado a ajax
   const xhr = new XMLHttpRequest();
+
   //crear objeto
   xhr.open('POST', 'inc/modelos/modelo-contactos.php', true);
   //abrir conexion
@@ -103,6 +107,50 @@ function insertarBD(datos) {
 
   //enviar datos
   xhr.send(datos);
+}
+
+//eliminar el contacto
+function eliminarContacto(e) {
+  if (e.target.parentElement.classList.contains('btn-borrar')) { //buscar el boton
+    //tomar el id
+    const id = e.target.parentElement.getAttribute('data-id');
+    console.log(id);
+
+    const respuesta = confirm('¿Desea eliminar el registro?');
+    if (respuesta) {
+      //llamado a ajax      
+      //crear el objeto
+      const xhr = new XMLHttpRequest();
+
+      //abrir la conexion
+      xhr.open('GET', `inc/modelos/modelo-contactos.php?id=${id}&accion=borrar`, true);
+      // console.warn(xhr.responseText)
+      console.log(xhr);
+      //leer la respuesta
+      xhr.onload = function(){
+      if(this.status === 200){
+        const resultado = JSON.parse(xhr.responseText);
+        // console.log(resultado);
+
+        if(resultado.respuesta === 'correcto'){
+          //eliminar registro del DOM
+          console.log(e.target.parentElement.parentElement.parentElement);
+          e.target.parentElement.parentElement.parentElement.remove();
+
+
+          //notificacion
+          mostrarNotificacion('Contacto eliminado', 'correcto');
+
+        } else {
+          mostrarNotificacion('Hubo un error', 'error');
+        }
+      }
+    }
+
+      //enviar la peticion
+      xhr.send();
+    }
+  }
 }
 
 //notificacion
