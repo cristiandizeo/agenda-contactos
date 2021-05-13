@@ -51,7 +51,7 @@ function insertarBD(datos) {
       //inserta un nuevo elemento a la tabla
       const nuevoContacto = document.createElement('tr');
 
-      nuevoContacto.innerHTML =`
+      nuevoContacto.innerHTML = `
       <td>${respuesta.datos.nombre}</td>
       <td>${respuesta.datos.empresa}</td>
       <td>${respuesta.datos.telefono}</td>
@@ -71,7 +71,7 @@ function insertarBD(datos) {
 
       //agregarlo al padre
       contenedorAcciones.appendChild(btnEditar);
-      
+
       //crear el icono de eliminar
       const iconoEliminar = document.createElement('i');
       iconoEliminar.classList.add('fas', 'fa-trash-alt');
@@ -94,7 +94,7 @@ function insertarBD(datos) {
 
       //resetear form
       document.querySelector('form').reset();
-      
+
       //mostrar notificacion
       mostrarNotificacion('Contacto creado correctamente', 'correcto')
     }
