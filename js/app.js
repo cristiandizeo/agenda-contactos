@@ -1,5 +1,7 @@
 const formularioContactos = document.querySelector("#contacto"),
-  listadoContactos = document.querySelector('#listado-contactos tbody');
+  listadoContactos = document.querySelector('#listado-contactos tbody'),
+  inputBuscador = document.querySelector('#buscar');
+
 
 eventListeners();
 function eventListeners() {
@@ -7,9 +9,11 @@ function eventListeners() {
   formularioContactos.addEventListener("submit", leerFormulario);
 
   //listener para eliminar 
-  if(listadoContactos){
-  listadoContactos.addEventListener("click", eliminarContacto);
-}
+  if (listadoContactos) {
+    listadoContactos.addEventListener("click", eliminarContacto);
+  }
+  //buscador
+  inputBuscador.addEventListener('input', buscarContactos);
 }
 
 function leerFormulario(e) {
@@ -44,6 +48,7 @@ function leerFormulario(e) {
     }
   }
 }
+
 //inserta en bdd por ajax
 function insertarBD(datos) {
   //llamado a ajax
@@ -114,32 +119,33 @@ function insertarBD(datos) {
   //enviar datos
   xhr.send(datos);
 }
-function actualizarRegistro(datos){
+
+function actualizarRegistro(datos) {
   // console.log(...datos);
-  
+
   //crear el objeto
   const xhr = new XMLHttpRequest();
 
   //abrir la conexion
   xhr.open('POST', 'inc/modelos/modelo-contactos.php', true);
-  
+
   //leer la respuesta
-  xhr.onload = function(){
-    if(this.status === 200){
+  xhr.onload = function () {
+    if (this.status === 200) {
 
       const respuesta = JSON.parse(xhr.responseText);
       // console.log(respuesta);
-      if(respuesta.respuesta == 'correcto'){
+      if (respuesta.respuesta == 'correcto') {
         //mostrar noti correcto
         mostrarNotificacion('¡Contacto modificado!', 'correcto');
-      }else{
+      } else {
         //mostrar noti error
         mostrarNotificacion('Hubo un error', 'error');
       }
       //despues de 3 seg redireccionar
-      setTimeout(()=> {
+      setTimeout(() => {
         window.location.href = 'index.php';
-      },1500);
+      }, 1500);
     }
   }
 
@@ -165,25 +171,25 @@ function eliminarContacto(e) {
       // console.warn(xhr.responseText)
       console.log(xhr);
       //leer la respuesta
-      xhr.onload = function(){
-      if(this.status === 200){
-        const resultado = JSON.parse(xhr.responseText);
-        // console.log(resultado);
+      xhr.onload = function () {
+        if (this.status === 200) {
+          const resultado = JSON.parse(xhr.responseText);
+          // console.log(resultado);
 
-        if(resultado.respuesta === 'correcto'){
-          //eliminar registro del DOM
-          console.log(e.target.parentElement.parentElement.parentElement);
-          e.target.parentElement.parentElement.parentElement.remove();
+          if (resultado.respuesta === 'correcto') {
+            //eliminar registro del DOM
+            console.log(e.target.parentElement.parentElement.parentElement);
+            e.target.parentElement.parentElement.parentElement.remove();
 
 
-          //notificacion
-          mostrarNotificacion('Contacto eliminado', 'correcto');
+            //notificacion
+            mostrarNotificacion('Contacto eliminado', 'correcto');
 
-        } else {
-          mostrarNotificacion('Hubo un error', 'error');
+          } else {
+            mostrarNotificacion('Hubo un error', 'error');
+          }
         }
       }
-    }
 
       //enviar la peticion
       xhr.send();
@@ -212,4 +218,21 @@ function mostrarNotificacion(mensaje, clase) {
       }, 500);
     }, 3000);
   }, 100);
+}
+
+//buscador
+function buscarContactos(e) {
+  //console.log(e.target.value);
+
+  const expresion = new RegExp(e.target.value, "i"),
+    registros = document.querySelectorAll('tbody tr');
+
+  registros.forEach(registro => {
+    registro.style.display = 'none';
+
+    // console.log(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion) != -1);
+    if (registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion) != -1) {
+      registro.style.display = 'table-row';
+    }
+  })
 }

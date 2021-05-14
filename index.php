@@ -36,7 +36,6 @@ include 'inc/layout/header.php' ?>;
                         foreach($contactos as $contacto){                        
                     ?>
                     <tr>
-                           <!--  para mostrar registros en <pre><php? var_dump($contacto);?></pre> -->
                         <td><?php echo $contacto['nombre']; ?></td>
                         <td><?php echo $contacto['empresa']; ?></td>
                         <td><?php echo $contacto['telefono']; ?></td>
