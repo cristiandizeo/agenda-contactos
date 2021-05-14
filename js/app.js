@@ -14,6 +14,9 @@ function eventListeners() {
   }
   //buscador
   inputBuscador.addEventListener('input', buscarContactos);
+
+  //contador contactos
+  numeroContactos();
 }
 
 function leerFormulario(e) {
@@ -112,6 +115,9 @@ function insertarBD(datos) {
 
       //mostrar notificacion
       mostrarNotificacion('Contacto creado correctamente', 'correcto')
+
+      //actualizar numero contactos
+      numeroContactos();
     }
   }
   //pasar datos
@@ -184,7 +190,8 @@ function eliminarContacto(e) {
 
             //notificacion
             mostrarNotificacion('Contacto eliminado', 'correcto');
-
+            //actualizar numero contactos
+            numeroContactos();
           } else {
             mostrarNotificacion('Hubo un error', 'error');
           }
@@ -234,5 +241,24 @@ function buscarContactos(e) {
     if (registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion) != -1) {
       registro.style.display = 'table-row';
     }
+
+    numeroContactos();
   })
+
+}
+
+//numero de contactos
+function numeroContactos() {
+  const totalContactos = document.querySelectorAll('tbody tr'),
+    contenedorNumero = document.querySelector('.total-contactos span');
+  // console.log(totalContactos.length);
+
+  let total = 0;
+  totalContactos.forEach(contacto => {
+    if (contacto.style.display === '' || contacto.style.display === 'table-row') {
+      total++;
+    }
+  });
+  // console.log(total);
+  contenedorNumero.textContent = total;
 }

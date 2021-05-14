@@ -17,7 +17,7 @@ include 'inc/layout/header.php' ?>;
         <h2>Contactos</h2>
 
         <input type="text" id="buscar" class="buscador sombra" placeholder="Buscar contactos">
-        <p class="total-contactos"><span>2</span> contactos</p>
+        <p class="total-contactos"><span></span> contactos</p>
         <div class="contenedor-tabla">
             <table id="listado-contactos" class="listado-contactos">
                 <thead>
